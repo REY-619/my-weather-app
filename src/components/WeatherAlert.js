@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 const WeatherAlert = () => {
   const [location, setLocation] = useState("London");
   const [alert, setAlert] = useState(null);
+  const [temperature, setTemperature] = useState(0);
 
   useEffect(() => {
     fetch(
@@ -11,6 +12,12 @@ const WeatherAlert = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data); // Log the entire data object to inspect it
+        if (data.main && data.main.temp) {
+          const tempInCelsius = data.main.temp - 273.15;
+          setTemperature(tempInCelsius.toFixed(2)); // Convert to Celsius and fix to 2 decimal places
+        } else {
+          setTemperature(null); // No temperature available
+        }
         if (data.weather && data.weather.length > 0) {
           setAlert(data.weather[0]);
         } else {
@@ -24,7 +31,6 @@ const WeatherAlert = () => {
     setLocation(event.target.value);
   };
 
-
   return (
     <div className="weather-alert">
       <input
@@ -34,11 +40,12 @@ const WeatherAlert = () => {
         placeholder="Enter location"
       />
       <p>Enter the city you wanna Search</p>
-      {alert ? (
+      {alert || temperature ? (
         <div>
           <h2>Current Weather</h2>
           <p>Main: {alert.main}</p>
           <p>Description: {alert.description}</p>
+          <p>Temparature: {temperature}° Celsius</p>
         </div>
       ) : (
         <p>No weather data available at this time.</p>
