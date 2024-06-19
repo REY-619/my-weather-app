@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Header from "./components/Header";
+import WeatherAlert from "./components/WeatherAlert";
+import WeatherStories from "./components/WeatherStories";
+import UserGroupView from "./components/UserGroupView";
+import EventPlannerView from "./components/EventPlannerView";
+import FarmerView from "./components/FarmerView";
+import TravelerView from "./components/TravelerView";
 
-function App() {
+const App = () => {
+  const [userGroup, setUserGroup] = useState("general");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header setUserGroup={setUserGroup} />
+      <WeatherAlert />
+      <UserGroupView userGroup={userGroup} />
+      <WeatherStories />
     </div>
   );
-}
+};
 
 export default App;
